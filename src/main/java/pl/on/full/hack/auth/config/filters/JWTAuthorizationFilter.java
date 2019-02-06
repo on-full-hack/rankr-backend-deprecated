@@ -1,7 +1,6 @@
 package pl.on.full.hack.auth.config.filters;
 
 import com.auth0.jwt.JWT;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -19,11 +18,11 @@ import static pl.on.full.hack.auth.config.SecurityConstants.*;
 
 public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
 
-    @Value("${security.jwt.secret}")
     private String secret;
 
-    public JWTAuthorizationFilter(AuthenticationManager authManager) {
+    public JWTAuthorizationFilter(AuthenticationManager authManager, String secret) {
         super(authManager);
+        this.secret = secret;
     }
 
     @Override
