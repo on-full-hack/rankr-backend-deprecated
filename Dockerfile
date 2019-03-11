@@ -1,8 +1,5 @@
-FROM java
-
-WORKDIR ./app
-COPY ./target/rankr-0.0.1-SNAPSHOT.jar ./app
-COPY ./target/rankr-0.0.1-SNAPSHOT.jar .
+FROM openjdk:8-jdk-alpine
+VOLUME /tmp
+COPY ./target/rankr-0.0.1-SNAPSHOT.jar app.jar
 EXPOSE 8080
-EXPOSE 5432
-CMD echo lol
+ENTRYPOINT ["java","-jar","/app.jar"]
