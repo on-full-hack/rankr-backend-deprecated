@@ -6,7 +6,7 @@ import java.io.Serializable;
 
 @Embeddable
 @Data
-public class RatingPK implements Serializable {
+public class RatingId implements Serializable {
 
     @Column(name = "user_id")
     private Long userId;

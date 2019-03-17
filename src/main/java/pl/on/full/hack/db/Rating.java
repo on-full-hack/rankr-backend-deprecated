@@ -9,7 +9,7 @@ import javax.persistence.*;
 public class Rating {
 
     @EmbeddedId
-    private RatingPK id;
+    private RatingId id;
 
     @ManyToOne
     @MapsId("userId")
@@ -20,4 +20,6 @@ public class Rating {
     @MapsId("leagueId")
     @JoinColumn(name = "league_id")
     private League league;
+
+    private Long value;
 }
