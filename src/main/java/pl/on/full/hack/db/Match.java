@@ -20,6 +20,10 @@ public class Match {
     @JoinColumn(name = "venue_id")
     private Venue venue;
 
+    @OneToOne()
+    @JoinColumn(name = "winner_id")
+    private RankrUser winner;
+
     @ManyToOne()
     @JoinColumn(name = "discipline_id")
     private Discipline discipline;

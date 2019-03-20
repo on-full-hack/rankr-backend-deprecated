@@ -5,11 +5,11 @@ import pl.on.full.hack.auth.entity.RankrUser;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "ratings")
-public class Rating {
+@Table(name = "league_player")
+public class LeaguePlayer {
 
     @EmbeddedId
-    private RatingId id;
+    private LeaguePlayerId id;
 
     @ManyToOne
     @MapsId("userId")
@@ -21,5 +21,5 @@ public class Rating {
     @JoinColumn(name = "league_id")
     private League league;
 
-    private Long value;
+    private Long rating;
 }

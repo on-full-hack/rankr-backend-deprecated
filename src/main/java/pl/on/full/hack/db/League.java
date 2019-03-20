@@ -1,7 +1,6 @@
 package pl.on.full.hack.db;
 
 import lombok.Data;
-import pl.on.full.hack.auth.entity.RankrUser;
 
 import javax.persistence.*;
 import java.util.HashSet;
@@ -21,16 +20,6 @@ public class League {
     @OneToMany(mappedBy = "league")
     private Set<Match> matches = new HashSet<>();
 
-    @ManyToMany(cascade = {
-            CascadeType.PERSIST,
-            CascadeType.MERGE
-    })
-    @JoinTable(name = "league_competitor",
-            joinColumns = @JoinColumn(name = "league_id"),
-            inverseJoinColumns = @JoinColumn(name = "user_id")
-    )
-    private Set<RankrUser> competitors = new HashSet<>();
-
-    @OneToMany(mappedBy = "player")
-    private Set<Rating> rating = new HashSet<>();
+    @OneToMany(mappedBy = "league")
+    private Set<LeaguePlayer> leaguePlayer = new HashSet<>();
 }
