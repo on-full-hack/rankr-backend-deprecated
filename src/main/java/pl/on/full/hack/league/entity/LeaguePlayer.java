@@ -1,4 +1,4 @@
-package pl.on.full.hack.db;
+package pl.on.full.hack.league.entity;
 
 import pl.on.full.hack.auth.entity.RankrUser;
 

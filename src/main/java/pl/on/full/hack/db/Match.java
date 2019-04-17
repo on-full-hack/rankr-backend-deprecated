@@ -2,6 +2,7 @@ package pl.on.full.hack.db;
 
 import lombok.Data;
 import pl.on.full.hack.auth.entity.RankrUser;
+import pl.on.full.hack.league.entity.League;
 
 import javax.persistence.*;
 import java.util.HashSet;

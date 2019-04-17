@@ -1,9 +1,8 @@
 package pl.on.full.hack.auth.entity;
 
 import lombok.Data;
-import pl.on.full.hack.db.League;
 import pl.on.full.hack.db.Match;
-import pl.on.full.hack.db.LeaguePlayer;
+import pl.on.full.hack.league.entity.LeaguePlayer;
 
 import javax.persistence.*;
 import java.util.HashSet;

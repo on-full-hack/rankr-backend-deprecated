@@ -1,6 +1,7 @@
-package pl.on.full.hack.db;
+package pl.on.full.hack.league.entity;
 
 import lombok.Data;
+import pl.on.full.hack.db.Match;
 
 import javax.persistence.*;
 import java.util.HashSet;
