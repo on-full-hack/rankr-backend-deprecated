@@ -1,0 +1,44 @@
+version: '2.2'
+
+networks:
+  backend:
+    external: true
+
+services:
+  r_db:
+    image: postgres
+    restart: always
+    container_name: r_db
+    environment:
+      POSTGRES_PASSWORD: changeme
+      POSTGRES_USER: admin
+      POSTGRES_DB: rankr
+    hostname: r_db
+    tty: true
+    networks:
+      - backend
+    ports:
+      - "5000:5432/tcp"
+
+  r_backend:
+    image: rankr-backend
+    container_name: r_backend
+    restart: always
+    tty: true
+    networks:
+      - backend
+    ports:
+      - "8080:8080/tcp"
+    depends_on:
+      - r_db
+
+  r_front:
+    image: rankr-front
+    container_name: r_front
+    restart: always
+    tty: true
+    ports:
+      -  "3000:80/tcp"
+    depends_on:
+      - r_db
+      - r_backend
