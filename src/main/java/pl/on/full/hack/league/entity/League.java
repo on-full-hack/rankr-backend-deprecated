@@ -2,6 +2,7 @@ package pl.on.full.hack.league.entity;
 
 import lombok.Data;
 import org.modelmapper.spi.Mapping;
+import pl.on.full.hack.auth.entity.RankrUser;
 import pl.on.full.hack.base.utils.MappingUtil;
 import pl.on.full.hack.db.Match;
 import pl.on.full.hack.league.dto.LeagueDetailsDTO;
@@ -26,6 +27,10 @@ public class League {
     private String description;
 
     private String discipline;
+
+    @ManyToOne
+    @JoinColumn(name = "creator_id")
+    private RankrUser creator;
 
     @OneToMany(mappedBy = "league")
     private Set<Match> matches = new HashSet<>();

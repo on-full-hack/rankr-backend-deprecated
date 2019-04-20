@@ -40,13 +40,13 @@ public class MappingUtilTest {
         Match match = new Match();
         match.setDiscipline(Discipline.SQUASH.getName());
         match.setVenue(new Venue(1L, "Venue test", 1.1d, 1.5d, null));
-        match.setWinner(new RankrUser(0, "pwypchal", null, null, null));
+        match.setWinner(new RankrUser(0, "pwypchal", null, null, null, null));
         return match;
     }
 
     private LeaguePlayer prepareLeaguePlayer() {
         LeaguePlayer leaguePlayer = new LeaguePlayer();
-        leaguePlayer.setPlayer(new RankrUser(0, "pwypchal", null, null, null));
+        leaguePlayer.setPlayer(new RankrUser(0, "pwypchal", null, null, null, null));
         leaguePlayer.setId(new LeaguePlayerId(1L, 2L));
         leaguePlayer.setRating(100L);
         return leaguePlayer;

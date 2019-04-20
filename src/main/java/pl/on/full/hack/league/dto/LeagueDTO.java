@@ -8,4 +8,8 @@ public class LeagueDTO {
     private Long id;
 
     private String name;
+
+    private String discipline;
+
+    private String description;
 }

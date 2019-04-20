@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import pl.on.full.hack.db.Match;
+import pl.on.full.hack.league.entity.League;
 import pl.on.full.hack.league.entity.LeaguePlayer;
 
 import javax.persistence.*;
@@ -24,6 +25,9 @@ public class RankrUser {
     private String username;
 
     private String password;
+
+    @OneToMany(mappedBy = "creator")
+    private Set<League> createdLeagues = new HashSet<>();
 
     @ManyToMany(mappedBy = "players")
     private Set<Match> matches = new HashSet<>();
