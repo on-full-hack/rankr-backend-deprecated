@@ -1,11 +1,13 @@
 package pl.on.full.hack.league.entity;
 
+import lombok.Data;
 import pl.on.full.hack.auth.entity.RankrUser;
 
 import javax.persistence.*;
 
 @Entity
 @Table(name = "league_player")
+@Data
 public class LeaguePlayer {
 
     @EmbeddedId

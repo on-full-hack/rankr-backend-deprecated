@@ -2,7 +2,7 @@ package pl.on.full.hack.league.dto;
 
 import lombok.Data;
 
-import java.util.Set;
+import java.util.List;
 
 @Data
 public class LeagueDetailsDTO {
@@ -11,7 +11,11 @@ public class LeagueDetailsDTO {
 
     private String name;
 
-    private Set<PlayerDTO> players;
+    private String discipline;
 
-    private Set<MatchDTO> matches;
+    private String description;
+
+    private List<LeaguePlayerDTO> players;
+
+    private List<MatchDTO> matches;
 }

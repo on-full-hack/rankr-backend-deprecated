@@ -12,6 +12,7 @@ import pl.on.full.hack.auth.dto.UserDTO;
 import pl.on.full.hack.auth.entity.RankrUser;
 import pl.on.full.hack.auth.exception.UserAlreadyExistsException;
 import pl.on.full.hack.auth.repository.UserRepository;
+import pl.on.full.hack.base.utils.MappingUtil;
 
 import static java.util.Collections.emptyList;
 
@@ -22,17 +23,14 @@ public class UserService implements UserDetailsService {
 
     private BCryptPasswordEncoder passwordEncoder;
 
-    private ModelMapper modelMapper;
-
     @Autowired
-    public UserService(UserRepository userRepository, BCryptPasswordEncoder passwordEncoder, ModelMapper modelMapper) {
+    public UserService(UserRepository userRepository, BCryptPasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
-        this.modelMapper = modelMapper;
     }
 
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+    public UserDetails loadUserByUsername(String username) {
         RankrUser rankrUser = userRepository.findByUsername(username);
         if (rankrUser == null) {
             throw new UsernameNotFoundException(username);
@@ -40,10 +38,10 @@ public class UserService implements UserDetailsService {
         return new User(rankrUser.getUsername(), rankrUser.getPassword(), emptyList());
     }
 
-    public void signUp(UserDTO user) throws UserAlreadyExistsException {
+    public void signUp(UserDTO user) {
         if (userRepository.findByUsername(user.getUsername()) == null) {
             user.setPassword(passwordEncoder.encode(user.getPassword()));
-            userRepository.save(modelMapper.map(user, RankrUser.class));
+            userRepository.save(MappingUtil.map(user, RankrUser.class));
         } else {
             throw new UserAlreadyExistsException();
         }
