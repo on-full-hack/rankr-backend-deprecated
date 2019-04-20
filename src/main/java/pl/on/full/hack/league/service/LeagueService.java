@@ -35,6 +35,7 @@ public class LeagueService {
     public LeagueDTO addNewLeague(final LeagueDTO leagueDTO, final String username) {
         if (leagueDTO != null) {
             final League league = modelMapper.map(leagueDTO, League.class);
+            //TODO: add admin to league
             repository.save(league);
             return modelMapper.map(league, LeagueDTO.class);
         } else {

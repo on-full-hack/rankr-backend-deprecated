@@ -18,6 +18,8 @@ public class League {
 
     private String name;
 
+    private String description;
+
     @OneToMany(mappedBy = "league")
     private Set<Match> matches = new HashSet<>();
 
