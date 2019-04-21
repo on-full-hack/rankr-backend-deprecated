@@ -1,17 +1,17 @@
 package pl.on.full.hack.league.entity;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import javax.persistence.*;
 import java.io.Serializable;
 
 @Embeddable
 @Data
-@Entity
+@AllArgsConstructor
+@NoArgsConstructor
 public class LeaguePlayerId implements Serializable {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
 
     @Column(name = "user_id")
     private Long userId;

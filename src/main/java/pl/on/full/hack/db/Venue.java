@@ -1,5 +1,6 @@
 package pl.on.full.hack.db;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -9,6 +10,7 @@ import java.util.Set;
 @Entity
 @Table(name = "venues")
 @Data
+@AllArgsConstructor
 public class Venue {
 
     @Id

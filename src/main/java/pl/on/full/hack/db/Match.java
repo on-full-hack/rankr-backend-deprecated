@@ -25,9 +25,7 @@ public class Match {
     @JoinColumn(name = "winner_id")
     private RankrUser winner;
 
-    @ManyToOne()
-    @JoinColumn(name = "discipline_id")
-    private Discipline discipline;
+    private String discipline;
 
     @ManyToOne()
     @JoinColumn(name = "league_id")

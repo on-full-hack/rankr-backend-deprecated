@@ -1,22 +1,14 @@
 package pl.on.full.hack.db;
 
-import lombok.Data;
+import lombok.Getter;
 
-import javax.persistence.*;
-import java.util.HashSet;
-import java.util.Set;
-
-@Entity
-@Table(name = "disciplines")
-@Data
-public class Discipline {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+@Getter
+public enum Discipline {
+    SQUASH("Squash");
 
     private String name;
 
-    @OneToMany(mappedBy = "discipline")
-    private Set<Match> matches = new HashSet<>();
+    Discipline(String name) {
+        this.name = name;
+    }
 }

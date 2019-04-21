@@ -9,5 +9,7 @@ public class LeagueDTO {
 
     private String name;
 
+    private String discipline;
+
     private String description;
 }
