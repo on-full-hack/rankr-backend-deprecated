@@ -24,4 +24,6 @@ public class LeaguePlayer {
     private League league;
 
     private Long rating;
+
+    private Boolean active;
 }

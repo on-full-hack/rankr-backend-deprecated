@@ -4,10 +4,11 @@ import lombok.Data;
 
 @Data
 public class LeaguePlayerDTO {
-
     private Long id;
 
     private String username;
 
     private Long rating;
+
+    private Boolean active;
 }

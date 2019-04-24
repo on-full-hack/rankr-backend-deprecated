@@ -8,11 +8,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import pl.on.full.hack.auth.dto.UserDTO;
+import pl.on.full.hack.auth.entity.RankrUser;
 import pl.on.full.hack.base.dto.BaseApiContract;
 import pl.on.full.hack.league.dto.LeagueDTO;
 import pl.on.full.hack.league.dto.LeagueDetailsDTO;
-import pl.on.full.hack.league.dto.LeaguePlayerIdDTO;
-//import pl.on.full.hack.league.service.LeaguePlayerIdService;
+import pl.on.full.hack.league.dto.LeaguePlayerDTO;
+import pl.on.full.hack.league.service.LeaguePlayerService;
 import pl.on.full.hack.league.service.LeagueService;
 
 import java.util.Set;
@@ -23,12 +24,12 @@ import java.util.Set;
 public class LeagueController {
 
     private LeagueService leagueService;
-//    private LeaguePlayerIdService leaguePlayerIdService;
+    private LeaguePlayerService leaguePlayerService;
 
     @Autowired
-    public LeagueController(LeagueService leagueService /*, LeaguePlayerIdService leaguePlayerIdService*/) {
+    public LeagueController(LeagueService leagueService, LeaguePlayerService leaguePlayerService) {
         this.leagueService = leagueService;
-//        this.leaguePlayerIdService = leaguePlayerIdService;
+        this.leaguePlayerService = leaguePlayerService;
     }
 
     @GetMapping(path = "/")
@@ -39,7 +40,6 @@ public class LeagueController {
             return ResponseEntity.status(HttpStatus.OK).body(responseBody);
         } catch (Exception e) {
             return BaseApiContract.internalServerError(e);
-
         }
     }
 
@@ -84,21 +84,16 @@ public class LeagueController {
         }
     }
 
-//    @PostMapping(path = "/join")
-//    public ResponseEntity<BaseApiContract<LeaguePlayerIdDTO>> joinToLeague(@RequestBody Long league_id, Authentication authentication) {
-//        final BaseApiContract<LeaguePlayerIdDTO> responseBody = new BaseApiContract<>();
-//        try {
-//            final UserDTO user = (UserDTO) authentication.getPrincipal();
-//            long user_id = 1;
-//            LeaguePlayerIdDTO leaguePlayerIdDTO = new LeaguePlayerIdDTO();
-//            leaguePlayerIdDTO.setLeagueId(league_id);
-//            leaguePlayerIdDTO.setUserId(user_id);
-//            leaguePlayerIdDTO.setActivated(false);
-//            responseBody.setSpecificContract(leaguePlayerIdService.joinToLeague(leaguePlayerIdDTO));
-//            return ResponseEntity.status(HttpStatus.CREATED).body(responseBody);
-//        } catch (Exception e) {
-//            responseBody.setError(e.getMessage());
-//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(responseBody);
-//        }
-//    }
+    @PostMapping(path = "/join/{league_id}")
+    public ResponseEntity<BaseApiContract<String>> joinToLeague(@PathVariable("league_id") Long league_id, Authentication authentication) {
+        final BaseApiContract<String> responseBody = new BaseApiContract<>();
+        try {
+            final String username = (String) authentication.getPrincipal();
+            responseBody.setSpecificContract(leaguePlayerService.joinToLeague(league_id, username));
+            return ResponseEntity.status(HttpStatus.CREATED).body(responseBody);
+        } catch (Exception e) {
+            responseBody.setError(e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(responseBody);
+        }
+    }
 }

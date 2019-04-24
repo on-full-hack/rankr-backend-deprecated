@@ -18,6 +18,4 @@ public class LeaguePlayerId implements Serializable {
 
     @Column(name = "league_id")
     private Long leagueId;
-
-    private boolean activated;
 }

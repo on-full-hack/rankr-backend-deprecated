@@ -1,6 +1,8 @@
 package pl.on.full.hack.league.entity;
 
 import lombok.Data;
+import pl.on.full.hack.auth.entity.RankrUser;
+import pl.on.full.hack.base.utils.MappingUtil;
 import pl.on.full.hack.db.Match;
 import pl.on.full.hack.league.dto.LeagueDetailsDTO;
 import pl.on.full.hack.league.dto.LeaguePlayerDTO;
