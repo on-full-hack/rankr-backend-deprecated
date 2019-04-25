@@ -7,12 +7,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
-import pl.on.full.hack.auth.dto.UserDTO;
-import pl.on.full.hack.auth.entity.RankrUser;
 import pl.on.full.hack.base.dto.BaseApiContract;
 import pl.on.full.hack.league.dto.LeagueDTO;
 import pl.on.full.hack.league.dto.LeagueDetailsDTO;
-import pl.on.full.hack.league.dto.LeaguePlayerDTO;
+import pl.on.full.hack.league.exception.PendingRequestException;
 import pl.on.full.hack.league.service.LeaguePlayerService;
 import pl.on.full.hack.league.service.LeagueService;
 
@@ -85,12 +83,15 @@ public class LeagueController {
     }
 
     @PostMapping(path = "/join/{league_id}")
-    public ResponseEntity<BaseApiContract<String>> joinToLeague(@PathVariable("league_id") Long league_id, Authentication authentication) {
+    public ResponseEntity<BaseApiContract<String>> joinToLeague(@PathVariable("league_id") Long leagueId, Authentication authentication){
         final BaseApiContract<String> responseBody = new BaseApiContract<>();
         try {
             final String username = (String) authentication.getPrincipal();
-            responseBody.setSpecificContract(leaguePlayerService.joinToLeague(league_id, username));
+            responseBody.setSpecificContract(leaguePlayerService.joinToLeague(leagueId, username));
             return ResponseEntity.status(HttpStatus.CREATED).body(responseBody);
+        } catch (PendingRequestException e) {
+            responseBody.setError("Request is waiting for acceptance");
+            return ResponseEntity.status(HttpStatus.ACCEPTED).body(responseBody);
         } catch (Exception e) {
             responseBody.setError(e.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(responseBody);
