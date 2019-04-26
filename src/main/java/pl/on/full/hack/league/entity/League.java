@@ -1,7 +1,6 @@
 package pl.on.full.hack.league.entity;
 
 import lombok.Data;
-import org.modelmapper.spi.Mapping;
 import pl.on.full.hack.auth.entity.RankrUser;
 import pl.on.full.hack.base.utils.MappingUtil;
 import pl.on.full.hack.db.Match;

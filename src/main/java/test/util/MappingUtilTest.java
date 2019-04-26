@@ -33,6 +33,7 @@ public class MappingUtilTest {
         assertEquals(leaguePlayerDTO.getId(), leaguePlayer.getId().getUserId());
         assertEquals(leaguePlayerDTO.getRating(), leaguePlayer.getRating());
         assertEquals(leaguePlayerDTO.getUsername(), leaguePlayer.getPlayer().getUsername());
+        assertEquals(leaguePlayerDTO.getActive(), leaguePlayer.getActive());
 
     }
 
@@ -49,6 +50,7 @@ public class MappingUtilTest {
         leaguePlayer.setPlayer(new RankrUser(0, "pwypchal", null, null, null, null));
         leaguePlayer.setId(new LeaguePlayerId(1L, 2L));
         leaguePlayer.setRating(100L);
+        leaguePlayer.setActive(true);
         return leaguePlayer;
     }
 

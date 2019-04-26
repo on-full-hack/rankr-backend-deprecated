@@ -11,5 +11,6 @@ public class LeaguePlayerToDTOMapping extends PropertyMap<LeaguePlayer, LeaguePl
         map(source.getPlayer().getUsername()).setUsername(null);
         map(source.getRating()).setRating(null);
         map(source.getId().getUserId()).setId(null);
+        map(source.getActive()).setActive(null);
     }
 }
