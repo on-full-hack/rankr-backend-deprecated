@@ -5,6 +5,7 @@ import lombok.NonNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pl.on.full.hack.auth.entity.RankrUser;
+import pl.on.full.hack.auth.exception.UnauthorizedException;
 import pl.on.full.hack.auth.repository.UserRepository;
 import pl.on.full.hack.league.entity.League;
 import pl.on.full.hack.league.entity.LeaguePlayer;
@@ -29,7 +30,7 @@ public class LeaguePlayerService {
         this.leagueRepository = leagueRepository;
     }
 
-    public String joinToLeague(@NonNull final Long league_id,@NonNull final String username) throws NotFoundException, PendingRequestException{
+    public void joinToLeague(@NonNull final Long league_id,@NonNull final String username) throws NotFoundException, PendingRequestException{
         final Optional<League> leagueOptional = leagueRepository.findById(league_id);
         final League league = leagueOptional
                 .orElseThrow(() -> new NotFoundException("No league with id " + league_id));
@@ -46,6 +47,45 @@ public class LeaguePlayerService {
         LeaguePlayer player = new LeaguePlayer(leaguePlayerId, rankrUser, league, 0L, false);
 
         repository.save(player);
-        return "User joined to league successfully";
+    }
+
+    public void inviteToLeague(@NonNull final LeaguePlayerId leaguePlayerId, @NonNull final  String username) throws NotFoundException, UnauthorizedException{
+        final RankrUser leagueAdmin = userRepository.findByUsername(username);
+        final Optional<League> leagueOptional = leagueRepository.findById(leaguePlayerId.getLeagueId());
+        final League league = leagueOptional
+                .orElseThrow(() -> new NotFoundException("No league with id " + leaguePlayerId.getLeagueId()));
+
+        //TODO: 1. Check all users which has admin access granted
+        //TODO: 2. Generate link for league to automatically add by using it
+        if(leagueAdmin.getId() != league.getCreator().getId()){
+            throw new UnauthorizedException();
+        }
+
+        Optional<RankrUser> rankrUserOptional = userRepository.findById(leaguePlayerId.getUserId());
+        RankrUser rankrUser = rankrUserOptional
+                .orElseThrow(() -> new NotFoundException("No player with id " + leaguePlayerId.getLeagueId()));
+
+        LeaguePlayer newPlayer = new LeaguePlayer(leaguePlayerId, rankrUser, league, 0L, true);
+        repository.save(newPlayer);
+    }
+
+    public void removeFromLeague(@NonNull final LeaguePlayerId leaguePlayerId, @NonNull final  String username) throws NotFoundException, UnauthorizedException{
+        final RankrUser userAuthenticated = userRepository.findByUsername(username);
+        final Optional<League> leagueOptional = leagueRepository.findById(leaguePlayerId.getLeagueId());
+        final League league = leagueOptional
+                .orElseThrow(() -> new NotFoundException("No league with id " + leaguePlayerId.getLeagueId()));
+
+        //TODO: check all users which has admin access granted
+        if(leaguePlayerId.getUserId() != userAuthenticated.getId() && userAuthenticated.getId() != league.getCreator().getId()){
+            throw new UnauthorizedException();
+        }
+
+        Optional<RankrUser> rankrUserOptional = userRepository.findById(leaguePlayerId.getUserId());
+        RankrUser rankrUser = rankrUserOptional
+                .orElseThrow(() -> new NotFoundException("No player with id " + leaguePlayerId.getLeagueId()));
+
+        LeaguePlayer playerToRemove = new LeaguePlayer(leaguePlayerId, rankrUser, league, 0L, true);
+
+        repository.delete(playerToRemove);
     }
 }
