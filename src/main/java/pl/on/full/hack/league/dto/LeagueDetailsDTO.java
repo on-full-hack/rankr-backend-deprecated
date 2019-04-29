@@ -15,6 +15,8 @@ public class LeagueDetailsDTO {
 
     private String description;
 
+    private String type;
+
     private List<LeaguePlayerDTO> players;
 
     private List<MatchDTO> matches;

@@ -1,8 +1,10 @@
 package pl.on.full.hack.league.service;
 
 import javassist.NotFoundException;
+import lombok.NonNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import pl.on.full.hack.auth.entity.RankrUser;
 import pl.on.full.hack.auth.exception.UnauthorizedException;
 import pl.on.full.hack.auth.repository.UserRepository;
 import pl.on.full.hack.base.utils.MappingUtil;
@@ -11,7 +13,6 @@ import pl.on.full.hack.league.dto.LeagueDetailsDTO;
 import pl.on.full.hack.league.entity.League;
 import pl.on.full.hack.league.repository.LeagueRepository;
 
-import javax.naming.NoPermissionException;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -35,18 +36,14 @@ public class LeagueService {
                 .collect(Collectors.toSet());
         }
 
-    public LeagueDTO addNewLeague(final LeagueDTO leagueDTO, final String username) {
-        if (leagueDTO != null) {
+    public LeagueDTO addNewLeague(@NonNull final LeagueDTO leagueDTO, final String username) {
             final League league = MappingUtil.map(leagueDTO, League.class);
             league.setCreator(userRepository.findByUsername(username));
             repository.save(league);
             return MappingUtil.map(league, LeagueDTO.class);
-        } else {
-            throw new NullPointerException("LeagueDTO cannot be null");
-        }
     }
 
-    public LeagueDetailsDTO getDetails(final Long id) throws NotFoundException {
+    public LeagueDetailsDTO getDetails(@NonNull final Long id) throws NotFoundException {
         final Optional<League> leagueOptional = repository.findById(id);
         final League league = leagueOptional
                 .orElseThrow(() -> new NotFoundException("No league with id " + id));
@@ -54,7 +51,7 @@ public class LeagueService {
         return  league.getDetailsDTO();
     }
 
-    public void deleteLeague(final Long id, final String username) throws NotFoundException {
+    public void deleteLeague(@NonNull final Long id, final String username) throws NotFoundException {
         final Optional<League> leagueOptional = repository.findById(id);
         final League league = leagueOptional
                 .orElseThrow(() -> new NotFoundException("No league with id " + id));
@@ -64,5 +61,18 @@ public class LeagueService {
         }
 
         repository.deleteById(id);
+    }
+
+    public void updateLeague(@NonNull LeagueDTO leagueDTO ,final String username) throws NotFoundException, UnauthorizedException{ ;
+        final Optional<League> leagueOptional = repository.findById(leagueDTO.getId());
+        final League league = leagueOptional
+                .orElseThrow(() -> new NotFoundException("No league with id " + leagueDTO.getId()));
+
+        if (!league.getCreator().getUsername().equals(username)) {
+            throw new UnauthorizedException();
+        }
+
+        League updatedLeague = MappingUtil.map(leagueDTO, League.class);
+        repository.save(updatedLeague);
     }
 }

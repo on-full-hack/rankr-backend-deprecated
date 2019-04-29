@@ -12,4 +12,6 @@ public class LeagueDTO {
     private String discipline;
 
     private String description;
+
+    private String type;
 }
