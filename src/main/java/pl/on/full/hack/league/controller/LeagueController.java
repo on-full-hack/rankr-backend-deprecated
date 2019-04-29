@@ -7,9 +7,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
+import pl.on.full.hack.auth.exception.UnauthorizedException;
 import pl.on.full.hack.base.dto.BaseApiContract;
 import pl.on.full.hack.league.dto.LeagueDTO;
 import pl.on.full.hack.league.dto.LeagueDetailsDTO;
+import pl.on.full.hack.league.entity.LeaguePlayerId;
 import pl.on.full.hack.league.exception.PendingRequestException;
 import pl.on.full.hack.league.service.LeaguePlayerService;
 import pl.on.full.hack.league.service.LeagueService;
@@ -82,12 +84,12 @@ public class LeagueController {
         }
     }
 
-    @PostMapping(path = "/join/{league_id}")
-    public ResponseEntity<BaseApiContract<String>> joinToLeague(@PathVariable("league_id") Long leagueId, Authentication authentication){
-        final BaseApiContract<String> responseBody = new BaseApiContract<>();
+    @PostMapping(path = "/user/join/{leagueId}")
+    public ResponseEntity<BaseApiContract<Void>> joinToLeague(@PathVariable("leagueId") Long leagueId, Authentication authentication){
+        final BaseApiContract<Void> responseBody = new BaseApiContract<>();
         try {
             final String username = (String) authentication.getPrincipal();
-            responseBody.setSpecificContract(leaguePlayerService.joinToLeague(leagueId, username));
+            leaguePlayerService.joinToLeague(leagueId, username);
             return ResponseEntity.status(HttpStatus.CREATED).body(responseBody);
         } catch (PendingRequestException e) {
             responseBody.setError("Request is waiting for acceptance");
@@ -95,6 +97,38 @@ public class LeagueController {
         } catch (Exception e) {
             responseBody.setError(e.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(responseBody);
+        }
+    }
+
+    @PostMapping(path = "/user")
+    public ResponseEntity<BaseApiContract<Void>> inviteToLeague(@RequestBody LeaguePlayerId leaguePlayerId, Authentication authentication){
+        final BaseApiContract<Void> responseBody = new BaseApiContract<>();
+        try {
+            final String username = (String) authentication.getPrincipal();
+            leaguePlayerService.inviteToLeague(leaguePlayerId, username);
+            return ResponseEntity.status(HttpStatus.CREATED).body(responseBody);
+        } catch (UnauthorizedException e){
+            responseBody.setError(e.getMessage());
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(responseBody);
+        } catch (NotFoundException e) {
+            responseBody.setError(e.getMessage());
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(responseBody);
+        }
+    }
+
+    @DeleteMapping(path = "/user")
+    public ResponseEntity<BaseApiContract<Void>> removeFromLeague(@RequestBody LeaguePlayerId leaguePlayerId, Authentication authentication){
+        final BaseApiContract<Void> responseBody = new BaseApiContract<>();
+        try {
+            final String username = (String) authentication.getPrincipal();
+            leaguePlayerService.removeFromLeague(leaguePlayerId, username);
+            return ResponseEntity.status(HttpStatus.OK).body(responseBody);
+        } catch (UnauthorizedException e){
+            responseBody.setError(e.getMessage());
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(responseBody);
+        } catch (NotFoundException e) {
+            responseBody.setError(e.getMessage());
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(responseBody);
         }
     }
 }
