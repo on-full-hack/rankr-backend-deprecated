@@ -27,6 +27,8 @@ public class League {
 
     private String discipline;
 
+    private String type;
+
     @ManyToOne
     @JoinColumn(name = "creator_id")
     private RankrUser creator;
@@ -45,6 +47,7 @@ public class League {
         leagueDetailsDTO.setName(getName());
         leagueDetailsDTO.setId(getId());
         leagueDetailsDTO.setDescription(getDescription());
+        leagueDetailsDTO.setType(getType());
         return leagueDetailsDTO;
     }
 }

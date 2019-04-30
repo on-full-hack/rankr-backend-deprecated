@@ -69,6 +69,22 @@ public class LeagueController {
         }
     }
 
+    @PutMapping(path = "/")
+    public ResponseEntity<BaseApiContract<Void>> updateLeague(@RequestBody LeagueDTO leagueDTO, Authentication authentication){
+        final BaseApiContract<Void> responseBody = new BaseApiContract<>();
+        try {
+            final String username = (String) authentication.getPrincipal();
+            leagueService.updateLeague(leagueDTO, username);
+            return ResponseEntity.status(HttpStatus.OK).body(responseBody);
+        } catch (NotFoundException e) {
+            responseBody.setError(e.getMessage());
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(responseBody);
+        } catch (UnauthorizedException e){
+            responseBody.setError(e.getMessage());
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(responseBody);
+        }
+    }
+
     @DeleteMapping(path = "/{id}")
     public ResponseEntity<BaseApiContract<Void>> deleteLeague(@PathVariable("id") Long leagueId, Authentication authentication) {
         final BaseApiContract<Void> responseBody = new BaseApiContract<>();
