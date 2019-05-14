@@ -73,6 +73,7 @@ public class LeagueService {
         }
 
         League updatedLeague = MappingUtil.map(leagueDTO, League.class);
+        updatedLeague.setCreator(league.getCreator());
         repository.save(updatedLeague);
     }
 }
