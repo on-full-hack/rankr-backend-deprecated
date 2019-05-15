@@ -33,6 +33,7 @@ public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
 
         if (header == null || !header.startsWith(TOKEN_PREFIX)) {
             chain.doFilter(request, response);
+            return;
         }
 
         UsernamePasswordAuthenticationToken authentication = getAuthentication(request);
