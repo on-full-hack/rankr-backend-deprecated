@@ -132,11 +132,12 @@ public class LeagueController {
         }
     }
 
-    @DeleteMapping(path = "/user")
-    public ResponseEntity<BaseApiContract<Void>> removeFromLeague(@RequestBody LeaguePlayerId leaguePlayerId, Authentication authentication){
+    @DeleteMapping(path = "/user/{userId}/league/{leagueId}")
+    public ResponseEntity<BaseApiContract<Void>> removeFromLeague(@PathVariable("userId") Long userId, @PathVariable("leagueId") Long leagueId, Authentication authentication){
         final BaseApiContract<Void> responseBody = new BaseApiContract<>();
         try {
             final String username = (String) authentication.getPrincipal();
+            final LeaguePlayerId leaguePlayerId = new LeaguePlayerId(userId, leagueId);
             leaguePlayerService.removeFromLeague(leaguePlayerId, username);
             return ResponseEntity.status(HttpStatus.OK).body(responseBody);
         } catch (UnauthorizedException e){
