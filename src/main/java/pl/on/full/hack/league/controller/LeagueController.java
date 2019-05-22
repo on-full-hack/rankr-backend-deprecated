@@ -55,7 +55,7 @@ public class LeagueController {
         }
     }
 
-    @PostMapping(path = "/{id}")
+    @GetMapping(path = "/{id}")
     public ResponseEntity<BaseApiContract<LeagueDetailsDTO>> getLeagueDetails(@PathVariable("id") Long leagueId) {
         final BaseApiContract<LeagueDetailsDTO> responseBody = new BaseApiContract<>();
         try {
