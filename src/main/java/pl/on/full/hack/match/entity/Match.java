@@ -1,7 +1,9 @@
-package pl.on.full.hack.db;
+package pl.on.full.hack.match.entity;
 
 import lombok.Data;
 import pl.on.full.hack.auth.entity.RankrUser;
+import pl.on.full.hack.db.Venue;
+import pl.on.full.hack.league.dto.MatchDTO;
 import pl.on.full.hack.league.entity.League;
 
 import javax.persistence.*;
@@ -40,4 +42,12 @@ public class Match {
             inverseJoinColumns = @JoinColumn(name = "user_id")
     )
     private Set<RankrUser> players = new HashSet<>();
+
+    public MatchDTO getMatchDTO() {
+        final MatchDTO matchDTO = new MatchDTO();
+        matchDTO.setDiscipline(league.getDiscipline());
+        matchDTO.setVenue(venue.getName());
+        matchDTO.setWinner(winner.getUsername());
+        return matchDTO;
+    }
 }

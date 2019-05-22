@@ -3,7 +3,7 @@ package pl.on.full.hack.auth.entity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import pl.on.full.hack.db.Match;
+import pl.on.full.hack.match.entity.Match;
 import pl.on.full.hack.league.entity.League;
 import pl.on.full.hack.league.entity.LeaguePlayer;
 
