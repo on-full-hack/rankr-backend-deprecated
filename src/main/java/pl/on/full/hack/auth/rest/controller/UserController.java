@@ -27,6 +27,7 @@ public class UserController {
         final BaseApiContract<UserDTO> responseBody = new BaseApiContract<>();
         try {
             userService.signUp(user);
+            //Na pewno chcemy zwracać usera z hashowanym hasłem?
             responseBody.setSpecificContract(user);
             return ResponseEntity.status(HttpStatus.CREATED).body(responseBody);
         } catch (UserAlreadyExistsException e) {

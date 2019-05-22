@@ -4,7 +4,6 @@ import javassist.NotFoundException;
 import lombok.NonNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import pl.on.full.hack.auth.entity.RankrUser;
 import pl.on.full.hack.auth.exception.UnauthorizedException;
 import pl.on.full.hack.auth.repository.UserRepository;
 import pl.on.full.hack.base.utils.MappingUtil;
