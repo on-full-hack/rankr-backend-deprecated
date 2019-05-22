@@ -17,6 +17,8 @@ import pl.on.full.hack.auth.config.filters.JWTAuthenticationFilter;
 import pl.on.full.hack.auth.config.filters.JWTAuthorizationFilter;
 import pl.on.full.hack.auth.service.UserService;
 
+import java.util.Arrays;
+
 import static pl.on.full.hack.auth.config.SecurityConstants.SIGN_UP_URL;
 
 @EnableWebSecurity
@@ -56,8 +58,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Bean
     CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration configuration = new CorsConfiguration();
+        configuration.setAllowedOrigins(Arrays.asList("*"));
+        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "OPTIONS", "DELETE", "PUT", "PATCH"));
+        configuration.setAllowedHeaders(Arrays.asList("X-Requested-With", "Origin", "Content-Type", "Accept", "Authorization"));
+        configuration.setAllowCredentials(true);
         final UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", new CorsConfiguration().applyPermitDefaultValues());
+        source.registerCorsConfiguration("/**", configuration);
         return source;
     }
 }
