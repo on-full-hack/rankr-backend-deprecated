@@ -2,6 +2,7 @@ package pl.on.full.hack.db;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import pl.on.full.hack.match.entity.Match;
 
 import javax.persistence.*;
 import java.util.HashSet;

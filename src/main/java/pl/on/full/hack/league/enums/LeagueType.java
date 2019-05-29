@@ -1,4 +1,4 @@
-package pl.on.full.hack.db;
+package pl.on.full.hack.league.enums;
 
 import lombok.Getter;
 
