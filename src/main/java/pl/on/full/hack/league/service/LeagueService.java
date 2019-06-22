@@ -33,13 +33,13 @@ public class LeagueService {
         return leagues.stream()
                 .map(league -> MappingUtil.map(league, LeagueDTO.class))
                 .collect(Collectors.toSet());
-        }
+    }
 
     public LeagueDTO addNewLeague(@NonNull final LeagueDTO leagueDTO, final String username) {
-            final League league = MappingUtil.map(leagueDTO, League.class);
-            league.setCreator(userRepository.findByUsername(username));
-            repository.save(league);
-            return MappingUtil.map(league, LeagueDTO.class);
+        final League league = MappingUtil.map(leagueDTO, League.class);
+        league.setCreator(userRepository.findByUsername(username));
+        repository.save(league);
+        return MappingUtil.map(league, LeagueDTO.class);
     }
 
     public LeagueDetailsDTO getDetails(@NonNull final Long id) throws NotFoundException {
@@ -47,7 +47,7 @@ public class LeagueService {
         final League league = leagueOptional
                 .orElseThrow(() -> new NotFoundException("No league with id " + id));
 
-        return  league.getDetailsDTO();
+        return league.getDetailsDTO();
     }
 
     public void deleteLeague(@NonNull final Long id, final String username) throws NotFoundException {
@@ -62,7 +62,8 @@ public class LeagueService {
         repository.deleteById(id);
     }
 
-    public void updateLeague(@NonNull LeagueDTO leagueDTO ,final String username) throws NotFoundException, UnauthorizedException{ ;
+    public void updateLeague(@NonNull LeagueDTO leagueDTO, final String username) throws NotFoundException, UnauthorizedException {
+        ;
         final Optional<League> leagueOptional = repository.findById(leagueDTO.getId());
         final League league = leagueOptional
                 .orElseThrow(() -> new NotFoundException("No league with id " + leagueDTO.getId()));

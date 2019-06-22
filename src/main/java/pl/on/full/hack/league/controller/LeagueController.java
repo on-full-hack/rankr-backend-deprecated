@@ -32,7 +32,7 @@ public class LeagueController {
         this.leaguePlayerService = leaguePlayerService;
     }
 
-    @GetMapping(path = "/")
+    @GetMapping(path = "")
     public ResponseEntity<BaseApiContract<Set<LeagueDTO>>> findAllLeagues() {
         final BaseApiContract<Set<LeagueDTO>> responseBody = new BaseApiContract<>();
         try {
@@ -43,7 +43,7 @@ public class LeagueController {
         }
     }
 
-    @PostMapping(path = "/")
+    @PostMapping(path = "")
     public ResponseEntity<BaseApiContract<LeagueDTO>> addNewLeague(@RequestBody LeagueDTO leagueDTO, Authentication authentication) {
         final BaseApiContract<LeagueDTO> responseBody = new BaseApiContract<>();
         try {
@@ -69,7 +69,7 @@ public class LeagueController {
         }
     }
 
-    @PutMapping(path = "/")
+    @PutMapping(path = "")
     public ResponseEntity<BaseApiContract<Void>> updateLeague(@RequestBody LeagueDTO leagueDTO, Authentication authentication){
         final BaseApiContract<Void> responseBody = new BaseApiContract<>();
         try {
