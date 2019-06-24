@@ -1,6 +1,8 @@
 package pl.on.full.hack.league.entity;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 import pl.on.full.hack.auth.entity.RankrUser;
 import pl.on.full.hack.base.utils.MappingUtil;
 import pl.on.full.hack.match.entity.Match;
@@ -15,6 +17,8 @@ import java.util.Set;
 @Entity
 @Table(name = "leagues")
 @Data
+@EqualsAndHashCode(exclude={"matches", "leaguePlayers"})
+@ToString(exclude={"matches", "leaguePlayers"})
 public class League {
 
     @Id
@@ -42,6 +46,11 @@ public class League {
     public LeagueDetailsDTO getDetailsDTO() {
         final LeagueDetailsDTO leagueDetailsDTO = new LeagueDetailsDTO();
         leagueDetailsDTO.setMatches(MappingUtil.mapCollection(this.getMatches(), MatchDTO.class));
+//        leagueDetailsDTO.setPlayers(new ArrayList<LeaguePlayerDTO>());
+//        TODO:: Fix setPlayers
+        System.out.println(this.getLeaguePlayers().isEmpty());
+        System.out.println(this.getLeaguePlayers().toArray().length);
+        System.out.println(this.getLeaguePlayers().toString());
         leagueDetailsDTO.setPlayers(MappingUtil.mapCollection(this.getLeaguePlayers(), LeaguePlayerDTO.class));
         leagueDetailsDTO.setDiscipline(getDiscipline());
         leagueDetailsDTO.setName(getName());

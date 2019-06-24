@@ -46,7 +46,6 @@ public class LeagueService {
         final Optional<League> leagueOptional = repository.findById(id);
         final League league = leagueOptional
                 .orElseThrow(() -> new NotFoundException("No league with id " + id));
-
         return league.getDetailsDTO();
     }
 
@@ -63,7 +62,6 @@ public class LeagueService {
     }
 
     public void updateLeague(@NonNull LeagueDTO leagueDTO, final String username) throws NotFoundException, UnauthorizedException {
-        ;
         final Optional<League> leagueOptional = repository.findById(leagueDTO.getId());
         final League league = leagueOptional
                 .orElseThrow(() -> new NotFoundException("No league with id " + leagueDTO.getId()));

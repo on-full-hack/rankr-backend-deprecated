@@ -1,6 +1,8 @@
 package pl.on.full.hack.match.entity;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 import pl.on.full.hack.auth.entity.RankrUser;
 import pl.on.full.hack.db.Venue;
 import pl.on.full.hack.league.dto.MatchDTO;
@@ -13,6 +15,8 @@ import java.util.Set;
 @Entity
 @Table(name = "matches")
 @Data
+@EqualsAndHashCode(exclude={"players"})
+@ToString(exclude={"players"})
 public class Match {
 
     @Id
