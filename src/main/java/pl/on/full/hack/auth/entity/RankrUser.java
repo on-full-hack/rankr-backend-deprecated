@@ -1,8 +1,6 @@
 package pl.on.full.hack.auth.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import pl.on.full.hack.match.entity.Match;
 import pl.on.full.hack.league.entity.League;
 import pl.on.full.hack.league.entity.LeaguePlayer;
@@ -16,6 +14,8 @@ import java.util.Set;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@EqualsAndHashCode(exclude={"createdLeagues", "matches", "leaguePlayer"})
+@ToString(exclude={"createdLeagues", "matches", "leaguePlayer"})
 public class RankrUser {
 
     @Id
