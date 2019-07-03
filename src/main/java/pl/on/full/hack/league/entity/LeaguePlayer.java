@@ -2,7 +2,6 @@ package pl.on.full.hack.league.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import pl.on.full.hack.auth.entity.RankrUser;
 

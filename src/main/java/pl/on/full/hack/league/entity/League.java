@@ -43,14 +43,12 @@ public class League {
     @OneToMany(mappedBy = "league")
     private Set<LeaguePlayer> leaguePlayers = new HashSet<>();
 
+    @Column(unique=true)
+    private String codeToJoin;
+
     public LeagueDetailsDTO getDetailsDTO() {
         final LeagueDetailsDTO leagueDetailsDTO = new LeagueDetailsDTO();
         leagueDetailsDTO.setMatches(MappingUtil.mapCollection(this.getMatches(), MatchDTO.class));
-//        leagueDetailsDTO.setPlayers(new ArrayList<LeaguePlayerDTO>());
-//        TODO:: Fix setPlayers
-        System.out.println(this.getLeaguePlayers().isEmpty());
-        System.out.println(this.getLeaguePlayers().toArray().length);
-        System.out.println(this.getLeaguePlayers().toString());
         leagueDetailsDTO.setPlayers(MappingUtil.mapCollection(this.getLeaguePlayers(), LeaguePlayerDTO.class));
         leagueDetailsDTO.setDiscipline(getDiscipline());
         leagueDetailsDTO.setName(getName());

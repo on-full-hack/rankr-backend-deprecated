@@ -14,4 +14,6 @@ public class LeagueDTO {
     private String description;
 
     private String type;
+
+    private String codeToJoin;
 }
