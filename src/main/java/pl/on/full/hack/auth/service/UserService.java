@@ -40,8 +40,9 @@ public class UserService implements UserDetailsService {
 
     public void signUp(UserDTO user) {
         if (userRepository.findByUsername(user.getUsername()) == null) {
-            user.setPassword(passwordEncoder.encode(user.getPassword()));
-            userRepository.save(MappingUtil.map(user, RankrUser.class));
+            RankrUser rankrUser = MappingUtil.map(user, RankrUser.class);
+            rankrUser.setPassword(passwordEncoder.encode(user.getPassword()));
+            userRepository.save(rankrUser);
         } else {
             throw new UserAlreadyExistsException();
         }

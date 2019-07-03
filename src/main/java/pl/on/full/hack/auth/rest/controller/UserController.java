@@ -23,12 +23,10 @@ public class UserController {
     }
 
     @PostMapping(value = SecurityConstants.SIGN_UP_URL)
-    public ResponseEntity<BaseApiContract<UserDTO>> signUp(@RequestBody UserDTO user) {
+    public ResponseEntity<BaseApiContract> signUp(@RequestBody UserDTO user) {
         final BaseApiContract<UserDTO> responseBody = new BaseApiContract<>();
         try {
             userService.signUp(user);
-            //Na pewno chcemy zwracać usera z hashowanym hasłem?
-            responseBody.setSpecificContract(user);
             return ResponseEntity.status(HttpStatus.CREATED).body(responseBody);
         } catch (UserAlreadyExistsException e) {
             responseBody.setError("User " + user.getUsername() + " already exists");
