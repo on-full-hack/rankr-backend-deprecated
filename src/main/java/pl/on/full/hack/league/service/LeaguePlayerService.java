@@ -44,7 +44,7 @@ public class LeaguePlayerService {
         Optional<LeaguePlayer> checkIfPlayerExists = repository.findById(leaguePlayerId);
         if(checkIfPlayerExists.isPresent()){ throw new PendingRequestException(); }
 
-        LeaguePlayer player = new LeaguePlayer(leaguePlayerId, rankrUser, league, 0L, false);
+        LeaguePlayer player = new LeaguePlayer(leaguePlayerId, rankrUser, league, 0F, false);
 
         repository.save(player);
     }
@@ -65,7 +65,7 @@ public class LeaguePlayerService {
         RankrUser rankrUser = rankrUserOptional
                 .orElseThrow(() -> new NotFoundException("No player with id " + leaguePlayerId.getLeagueId()));
 
-        LeaguePlayer newPlayer = new LeaguePlayer(leaguePlayerId, rankrUser, league, 0L, true);
+        LeaguePlayer newPlayer = new LeaguePlayer(leaguePlayerId, rankrUser, league, 0F, true);
         repository.save(newPlayer);
     }
 
@@ -84,8 +84,15 @@ public class LeaguePlayerService {
         RankrUser rankrUser = rankrUserOptional
                 .orElseThrow(() -> new NotFoundException("No player with id " + leaguePlayerId.getLeagueId()));
 
-        LeaguePlayer playerToRemove = new LeaguePlayer(leaguePlayerId, rankrUser, league, 0L, true);
+        LeaguePlayer playerToRemove = new LeaguePlayer(leaguePlayerId, rankrUser, league, 0F, true);
 
         repository.delete(playerToRemove);
+    }
+
+    public Float getRatingForUser(final RankrUser rankrUser) throws NotFoundException {
+        final LeaguePlayer leaguePlayer = repository.findByPlayer(rankrUser)
+                .orElseThrow(() -> new NotFoundException("No player in league for player id: " + rankrUser.getId()));
+
+        return leaguePlayer.getRating();
     }
 }

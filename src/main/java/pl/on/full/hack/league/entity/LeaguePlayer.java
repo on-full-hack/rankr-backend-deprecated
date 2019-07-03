@@ -2,7 +2,6 @@ package pl.on.full.hack.league.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import pl.on.full.hack.auth.entity.RankrUser;
 
@@ -28,7 +27,7 @@ public class LeaguePlayer {
     @JoinColumn(name = "league_id")
     private League league;
 
-    private Long rating;
+    private Float rating;
 
     private Boolean active;
 }

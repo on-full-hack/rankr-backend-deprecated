@@ -31,6 +31,10 @@ public class Match {
     @JoinColumn(name = "winner_id")
     private RankrUser winner;
 
+    @OneToOne()
+    @JoinColumn(name = "loser_id")
+    private RankrUser loser;
+
     private String discipline;
 
     @ManyToOne()
