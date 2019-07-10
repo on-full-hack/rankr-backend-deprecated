@@ -8,4 +8,5 @@ import pl.on.full.hack.auth.entity.RankrUser;
 public interface UserRepository extends JpaRepository<RankrUser, Long> {
 
     RankrUser findByUsername(String username);
+
 }

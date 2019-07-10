@@ -54,4 +54,16 @@ public class Match {
         matchDTO.setWinner(winner.getUsername());
         return matchDTO;
     }
+
+    public Match(Venue venue, RankrUser winner, String discipline, League league, Set<RankrUser> players) {
+        this.venue = venue;
+        this.winner = winner;
+        this.discipline = discipline;
+        this.league = league;
+        this.players = players;
+    }
+
+    public Match(){
+
+    }
 }
