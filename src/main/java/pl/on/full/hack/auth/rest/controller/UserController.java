@@ -1,26 +1,34 @@
 package pl.on.full.hack.auth.rest.controller;
 
-import javassist.NotFoundException;
+import com.auth0.jwt.JWT;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import pl.on.full.hack.auth.config.SecurityConstants;
 import pl.on.full.hack.auth.dto.UserDTO;
 import pl.on.full.hack.auth.entity.RankrUser;
 import pl.on.full.hack.auth.exception.UserAlreadyExistsException;
 import pl.on.full.hack.auth.service.UserService;
 import pl.on.full.hack.base.dto.BaseApiContract;
+import pl.on.full.hack.auth.config.SecurityConstants;
+
+import java.util.Date;
+
+import static com.auth0.jwt.algorithms.Algorithm.HMAC512;
 
 @RestController
 public class UserController {
 
     private UserService userService;
+
+    @Value("${security.jwt.secret}")
+    private String secret;
+    @Value("#{new Long('${security.jwt.expiration.time}')}")
+    private Long expirationTime;
 
     @Autowired
     public UserController(UserService userService) {
@@ -54,6 +62,46 @@ public class UserController {
         } catch (UsernameNotFoundException e) {
             responseBody.setError(e.getMessage());
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(responseBody);
+        } catch (Exception e) {
+            return BaseApiContract.internalServerError(e);
+        }
+    }
+
+    @DeleteMapping(path = "/user")
+    public ResponseEntity<BaseApiContract<Void>> deleteUser(Authentication authentication) {
+        final BaseApiContract<Void> responseBody = new BaseApiContract<>();
+        try {
+            final String username = (String) authentication.getPrincipal();
+            userService.deleteUser(username);
+            return ResponseEntity.status(HttpStatus.OK).body(responseBody);
+        } catch (UsernameNotFoundException e) {
+            responseBody.setError(e.getMessage());
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(responseBody);
+        } catch (Exception e) {
+            return BaseApiContract.internalServerError(e);
+        }
+    }
+
+    /*
+    * REMEMBER: Updating user = read new auth token from header
+    * */
+    @PutMapping(path = "/user")
+    public ResponseEntity<BaseApiContract<Void>> updateUser(@RequestBody UserDTO user, Authentication authentication) {
+        final BaseApiContract<Void> responseBody = new BaseApiContract<>();
+        try {
+            final String username = (String) authentication.getPrincipal();
+            RankrUser updatedRankrUser = userService.updateUser(user, username);
+            String token = JWT.create()
+                    .withSubject(updatedRankrUser.getUsername())
+                    .withExpiresAt(new Date(System.currentTimeMillis() + expirationTime))
+                    .sign(HMAC512(secret.getBytes()));
+            return ResponseEntity.status(HttpStatus.ACCEPTED).header(SecurityConstants.AUTH_HEADER, SecurityConstants.TOKEN_PREFIX + token).body(responseBody);
+        } catch (UsernameNotFoundException e) {
+            responseBody.setError(e.getMessage());
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(responseBody);
+        } catch (UserAlreadyExistsException e) {
+            responseBody.setError(e.getMessage());
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(responseBody);
         } catch (Exception e) {
             return BaseApiContract.internalServerError(e);
         }

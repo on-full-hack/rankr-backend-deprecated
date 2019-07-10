@@ -58,4 +58,33 @@ public class UserService implements UserDetailsService {
         }
         return MappingUtil.map(rankrUser, UserDTO.class);
     }
+
+    public void deleteUser(@NonNull String username) throws UsernameNotFoundException {
+        RankrUser rankrUser = userRepository.findByUsername(username);
+        if (rankrUser == null) {
+            throw new UsernameNotFoundException(username);
+        }
+
+        userRepository.deleteById(rankrUser.getId());
+    }
+
+    public RankrUser updateUser(@NonNull UserDTO user, String username) throws UsernameNotFoundException, UserAlreadyExistsException {
+        RankrUser rankrUser = userRepository.findByUsername(username);
+        if (rankrUser == null) {
+            throw new UsernameNotFoundException(username);
+        }
+
+        if (userRepository.findByUsername(user.getUsername()) == null || rankrUser.getUsername().equals(user.getUsername())
+        ) {
+            if (!user.getPassword().equals("")){
+                user.setPassword(passwordEncoder.encode(user.getPassword()));
+                rankrUser.setPassword(user.getPassword());
+            }
+            rankrUser.setUsername(user.getUsername());
+            userRepository.save(rankrUser);
+            return rankrUser;
+        } else {
+            throw new UserAlreadyExistsException();
+        }
+    }
 }
