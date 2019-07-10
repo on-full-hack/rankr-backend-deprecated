@@ -1,5 +1,7 @@
 package pl.on.full.hack.auth.service;
 
+import javassist.NotFoundException;
+import lombok.NonNull;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.User;
@@ -13,6 +15,8 @@ import pl.on.full.hack.auth.entity.RankrUser;
 import pl.on.full.hack.auth.exception.UserAlreadyExistsException;
 import pl.on.full.hack.auth.repository.UserRepository;
 import pl.on.full.hack.base.utils.MappingUtil;
+
+import java.util.Optional;
 
 import static java.util.Collections.emptyList;
 
@@ -45,5 +49,13 @@ public class UserService implements UserDetailsService {
         } else {
             throw new UserAlreadyExistsException();
         }
+    }
+
+    public UserDTO getDetails(@NonNull String username) throws UsernameNotFoundException {
+        RankrUser rankrUser = userRepository.findByUsername(username);
+        if (rankrUser == null) {
+            throw new UsernameNotFoundException(username);
+        }
+        return MappingUtil.map(rankrUser, UserDTO.class);
     }
 }

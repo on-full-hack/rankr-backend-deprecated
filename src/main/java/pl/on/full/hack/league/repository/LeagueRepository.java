@@ -10,3 +10,4 @@ import java.util.List;
 public interface LeagueRepository extends JpaRepository<League, Long> {
     League findByCodeToJoin(String linkToJoin);
 }
+
