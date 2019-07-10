@@ -14,6 +14,7 @@ import pl.on.full.hack.league.exception.PendingRequestException;
 import pl.on.full.hack.league.repository.LeaguePlayerRepository;
 import pl.on.full.hack.league.repository.LeagueRepository;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -45,6 +46,25 @@ public class LeaguePlayerService {
         if(checkIfPlayerExists.isPresent()){ throw new PendingRequestException(); }
 
         LeaguePlayer player = new LeaguePlayer(leaguePlayerId, rankrUser, league, 0L, false);
+
+        repository.save(player);
+    }
+
+    public void joinToLeagueByLink(@NonNull final String leagueCodeToJoin, @NonNull final String username) throws NotFoundException, PendingRequestException{
+        final League leagueToJoin = leagueRepository.findByCodeToJoin(leagueCodeToJoin);
+        if(leagueToJoin == null){
+            throw new NotFoundException("No league with provided link found");
+        }
+
+        final League league = leagueToJoin;
+
+        //TODO: 1. Do we should check if the user is an admin?
+        //TODO: 2. Create league -> add new user as admin?
+
+        final RankrUser rankrUser = userRepository.findByUsername(username);
+        final LeaguePlayerId leaguePlayerId = new LeaguePlayerId(rankrUser.getId(), league.getId());
+
+        LeaguePlayer player = new LeaguePlayer(leaguePlayerId, rankrUser, league, 0L, true);
 
         repository.save(player);
     }

@@ -116,6 +116,19 @@ public class LeagueController {
         }
     }
 
+    @PostMapping(path = "/user/join/link/{leagueCodeToJoin}")
+    public ResponseEntity<BaseApiContract<Void>> joinToLeagueByLink(@PathVariable("leagueCodeToJoin") String leagueCodeToJoin, Authentication authentication){
+        final BaseApiContract<Void> responseBody = new BaseApiContract<>();
+        try {
+            final String username = (String) authentication.getPrincipal();
+            leaguePlayerService.joinToLeagueByLink(leagueCodeToJoin, username);
+            return ResponseEntity.status(HttpStatus.CREATED).body(responseBody);
+        } catch (Exception e) {
+            responseBody.setError(e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(responseBody);
+        }
+    }
+
     @PostMapping(path = "/user")
     public ResponseEntity<BaseApiContract<Void>> inviteToLeague(@RequestBody LeaguePlayerId leaguePlayerId, Authentication authentication){
         final BaseApiContract<Void> responseBody = new BaseApiContract<>();

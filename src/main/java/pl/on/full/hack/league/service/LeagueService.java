@@ -2,6 +2,7 @@ package pl.on.full.hack.league.service;
 
 import javassist.NotFoundException;
 import lombok.NonNull;
+import org.apache.commons.lang.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pl.on.full.hack.auth.exception.UnauthorizedException;
@@ -12,6 +13,7 @@ import pl.on.full.hack.league.dto.LeagueDetailsDTO;
 import pl.on.full.hack.league.entity.League;
 import pl.on.full.hack.league.repository.LeagueRepository;
 
+import java.nio.charset.Charset;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -38,6 +40,7 @@ public class LeagueService {
     public LeagueDTO addNewLeague(@NonNull final LeagueDTO leagueDTO, final String username) {
         final League league = MappingUtil.map(leagueDTO, League.class);
         league.setCreator(userRepository.findByUsername(username));
+        league.setCodeToJoin(this.generateUniqueCodeToJoin());
         repository.save(league);
         return MappingUtil.map(league, LeagueDTO.class);
     }
@@ -73,5 +76,16 @@ public class LeagueService {
         League updatedLeague = MappingUtil.map(leagueDTO, League.class);
         updatedLeague.setCreator(league.getCreator());
         repository.save(updatedLeague);
+    }
+
+    private String generateUniqueCodeToJoin(){
+        String generatedString = "";
+        while (generatedString.equals("")){
+            generatedString = RandomStringUtils.randomAlphabetic(5);
+            if (this.repository.findByCodeToJoin(generatedString) != null){
+                generatedString = "";
+            }
+        }
+        return generatedString;
     }
 }
