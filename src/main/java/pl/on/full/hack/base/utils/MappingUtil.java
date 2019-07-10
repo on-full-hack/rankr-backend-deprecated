@@ -2,7 +2,9 @@ package pl.on.full.hack.base.utils;
 
 import org.modelmapper.ModelMapper;
 import pl.on.full.hack.base.mapping.LeaguePlayerToDTOMapping;
+import pl.on.full.hack.base.mapping.LeagueToDTOMapping;
 import pl.on.full.hack.base.mapping.MatchToDTOMapping;
+import pl.on.full.hack.base.mapping.RankrUserToUserDTOMapping;
 
 import java.util.Collection;
 import java.util.List;
@@ -18,6 +20,8 @@ public class MappingUtil {
         modelMapper = new ModelMapper();
         modelMapper.addMappings(new LeaguePlayerToDTOMapping());
         modelMapper.addMappings(new MatchToDTOMapping());
+        modelMapper.addMappings(new LeagueToDTOMapping());
+        modelMapper.addMappings(new RankrUserToUserDTOMapping());
     }
 
     public static <S, T> T map(final S sourceObject, final Class<T> targetClass) {

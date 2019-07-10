@@ -1,6 +1,7 @@
 package pl.on.full.hack.league.dto;
 
 import lombok.Data;
+import pl.on.full.hack.auth.entity.RankrUser;
 
 @Data
 public class LeagueDTO {
@@ -16,4 +17,6 @@ public class LeagueDTO {
     private String type;
 
     private String codeToJoin;
+
+    private Long creatorId;
 }
