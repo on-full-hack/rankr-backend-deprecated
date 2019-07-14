@@ -1,6 +1,7 @@
 package pl.on.full.hack.auth.rest.controller;
 
 import com.auth0.jwt.JWT;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
@@ -14,7 +15,6 @@ import pl.on.full.hack.auth.entity.RankrUser;
 import pl.on.full.hack.auth.exception.UserAlreadyExistsException;
 import pl.on.full.hack.auth.service.UserService;
 import pl.on.full.hack.base.dto.BaseApiContract;
-import pl.on.full.hack.auth.config.SecurityConstants;
 
 import java.util.Date;
 
@@ -82,9 +82,7 @@ public class UserController {
         }
     }
 
-    /*
-    * REMEMBER: Updating user = read new auth token from header
-    * */
+    @ApiOperation(value = "Created for username or password update.", notes = "Every update generates new JWT token cause we base on username when we generate token")
     @PutMapping(path = "/user")
     public ResponseEntity<BaseApiContract<Void>> updateUser(@RequestBody UserDTO user, Authentication authentication) {
         final BaseApiContract<Void> responseBody = new BaseApiContract<>();

@@ -16,10 +16,10 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import pl.on.full.hack.auth.config.filters.JWTAuthenticationFilter;
 import pl.on.full.hack.auth.config.filters.JWTAuthorizationFilter;
 import pl.on.full.hack.auth.service.UserService;
+import static pl.on.full.hack.auth.config.SecurityConstants.*;
 
 import java.util.Arrays;
 
-import static pl.on.full.hack.auth.config.SecurityConstants.SIGN_UP_URL;
 
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
@@ -43,7 +43,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.cors().and().csrf().disable().authorizeRequests()
-                .antMatchers(HttpMethod.POST, SIGN_UP_URL).permitAll()
+                .antMatchers(HttpMethod.POST, SIGN_UP_URL)
+                .permitAll()
+                .antMatchers(HttpMethod.GET, SWAGGER_API, SWAGGER_UI, SWAGGER_WEBJARS, SWAGGER_RESOURCES)
+                .permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .addFilter(new JWTAuthenticationFilter(secret, expirationTime, authenticationManager()))
